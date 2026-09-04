@@ -39,8 +39,48 @@ function Index() {
       icon?.classList.toggle("rotate-180");
     };
     document.addEventListener("click", onClick);
-    return () => document.removeEventListener("click", onClick);
+
+    // smooth anchor scrolling
+    const onAnchor = (e: MouseEvent) => {
+      const a = (e.target as HTMLElement).closest("a[href^='#']") as HTMLAnchorElement | null;
+      if (!a) return;
+      const id = a.getAttribute("href")!.slice(1);
+      if (!id) return;
+      const target = document.getElementById(id);
+      if (!target) return;
+      e.preventDefault();
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+    };
+    document.addEventListener("click", onAnchor);
+
+    // scroll reveal
+    const nodes = Array.from(
+      document.querySelectorAll<HTMLElement>("#wasla-app section, #wasla-app section > div > *"),
+    ).slice(0, 250);
+    nodes.forEach((n, i) => {
+      n.setAttribute("data-reveal", "");
+      n.style.setProperty("--reveal-delay", `${(i % 4) * 90}ms`);
+    });
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            io.unobserve(entry.target);
+          }
+        });
+      },
+      { rootMargin: "0px 0px -10% 0px", threshold: 0.05 },
+    );
+    nodes.forEach((n) => io.observe(n));
+
+    return () => {
+      document.removeEventListener("click", onClick);
+      document.removeEventListener("click", onAnchor);
+      io.disconnect();
+    };
   }, []);
+
 
   return (
     <div className="bg-background font-body-md text-body-md text-on-background antialiased overflow-x-hidden">
