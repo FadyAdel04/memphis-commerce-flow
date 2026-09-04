@@ -71,6 +71,8 @@ function Index() {
 <span className="flex items-center gap-space-2xs"><span className="w-2.5 h-2.5 rounded-full bg-primary-container border border-on-surface"></span> <span data-i18n-key="ticker_facebook" className="">فيسبوك ماسنجر</span></span>
 </div>
 </div>
+</div>
+
 
 <section className="relative w-full max-w-container-max mx-auto px-gutter-mobile md:px-gutter-desktop pt-space-2xl md:pt-space-3xl pb-space-3xl">
 
