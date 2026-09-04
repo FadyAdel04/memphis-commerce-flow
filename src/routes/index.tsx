@@ -39,58 +39,15 @@ function Index() {
       icon?.classList.toggle("rotate-180");
     };
     document.addEventListener("click", onClick);
-
-    // smooth anchor scrolling
-    const onAnchor = (e: MouseEvent) => {
-      const a = (e.target as HTMLElement).closest("a[href^='#']") as HTMLAnchorElement | null;
-      if (!a) return;
-      const id = a.getAttribute("href")!.slice(1);
-      if (!id) return;
-      const target = document.getElementById(id);
-      if (!target) return;
-      e.preventDefault();
-      target.scrollIntoView({ behavior: "smooth", block: "start" });
-    };
-    document.addEventListener("click", onAnchor);
-
-    // scroll reveal
-    const nodes = Array.from(
-      document.querySelectorAll<HTMLElement>("#wasla-app section, #wasla-app section > div > *"),
-    ).slice(0, 250);
-    nodes.forEach((n, i) => {
-      n.setAttribute("data-reveal", "");
-      n.style.setProperty("--reveal-delay", `${(i % 4) * 90}ms`);
-    });
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-            io.unobserve(entry.target);
-          }
-        });
-      },
-      { rootMargin: "0px 0px -10% 0px", threshold: 0.05 },
-    );
-    nodes.forEach((n) => io.observe(n));
-
-    return () => {
-      document.removeEventListener("click", onClick);
-      document.removeEventListener("click", onAnchor);
-      io.disconnect();
-    };
+    return () => document.removeEventListener("click", onClick);
   }, []);
-
 
   return (
     <div className="bg-background font-body-md text-body-md text-on-background antialiased overflow-x-hidden">
 <header className="fixed top-0 inset-x-0 z-50 transition-all duration-300 px-gutter-mobile md:px-gutter-desktop py-space-xs"><div className="max-w-container-max mx-auto"><div className="h-20 bg-surface-container-lowest border-2 border-on-surface rounded-full px-space-md md:px-space-lg hard-shadow-sm flex items-center justify-between gap-space-sm"><div className="flex items-center gap-space-md"><a className="flex items-center gap-space-xs group" data-path="home" href="#"><img alt="WASLA Logo" className="h-10 w-auto object-contain rounded" src={logo} /><div className="flex flex-col"><span className="font-headline-sm text-headline-sm tracking-tight text-on-surface font-bold leading-none">وِصلة</span><span className="font-badge-sticker text-badge-sticker text-primary leading-none uppercase">WASLA</span></div></a><div className="hidden xl:inline-flex items-center px-space-xs py-space-2xs bg-tertiary-fixed text-on-tertiary-fixed border border-on-surface rounded-full font-badge-sticker text-badge-sticker rotate-2">تجارة اجتماعية ذكية</div></div><nav className="hidden lg:flex items-center gap-space-xs bg-surface-container-low p-space-2xs rounded-full border border-on-surface" data-active-classes="bg-primary text-on-primary font-bold shadow-[2px_2px_0px_#111c2d]"><a className="px-space-md py-space-xs rounded-full font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="product" href="#">المنتج</a><a className="px-space-md py-space-xs rounded-full font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="solutions" href="#">الحلول</a><a className="px-space-md py-space-xs rounded-full font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="pricing" href="#">الأسعار</a><a className="px-space-md py-space-xs rounded-full font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="resources" href="#">المصادر</a></nav><div className="flex items-center gap-space-xs md:gap-space-sm"><button className="flex items-center gap-space-2xs px-space-sm py-space-xs rounded-full bg-surface border-2 border-on-surface font-label-md text-label-md text-on-surface hover:bg-surface-container hard-shadow-active transition-all" id="langToggle" type="button"><span className="material-symbols-outlined text-[16px]">translate</span><span className="font-bold">العربية | EN</span></button><a className="hidden sm:inline-flex items-center justify-center px-space-md py-space-xs rounded-full border-2 border-on-surface bg-surface font-label-lg text-label-lg text-on-surface hover:bg-tertiary-fixed hard-shadow-active transition-all" data-path="login" href="#">تسجيل الدخول</a><a className="inline-flex items-center justify-center gap-space-xs px-space-md md:px-space-lg py-space-xs rounded-full bg-primary border-2 border-on-surface font-label-lg text-label-lg text-on-primary hard-shadow-sm hard-shadow-active hover:bg-primary-container transition-all group" data-path="signup" href="#"><span className="">ابدأ مجانًا</span><span className="material-symbols-outlined text-[18px] transition-transform group-hover:translate-x-[-2px] rtl:group-hover:translate-x-[2px]">arrow_forward</span></a><div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center border border-on-surface shrink-0"><span className="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></div></header><main className="w-full pt-20 bg-background min-h-screen"><div className="flex flex-col w-full overflow-x-hidden font-body-md text-on-background antialiased selection:bg-secondary-fixed selection:text-on-secondary-fixed" id="wasla-app">
 
-<div className="relative w-full h-56 md:h-[26rem] overflow-hidden">
-<div className="absolute top-1/2 left-1/2 w-[220%] -translate-x-1/2 -translate-y-1/2 bg-tertiary-fixed border-y-2 border-on-surface py-space-xs overflow-hidden select-none -rotate-[20deg] shadow-[0_6px_0_#111c2d]">
-
+<div className="w-full bg-tertiary-fixed border-y-2 border-on-surface py-space-xs overflow-hidden select-none">
 <div className="flex items-center gap-space-lg whitespace-nowrap animate-marquee tracking-wider font-badge-sticker text-badge-sticker text-on-tertiary-fixed font-bold uppercase">
-
 <span className="flex items-center gap-space-2xs"><span className="w-2.5 h-2.5 rounded-full bg-primary border border-on-surface"></span> <span data-i18n-key="ticker_whatsapp" className="">واتساب كلاود API</span></span>
 <span className="">★</span>
 <span className="flex items-center gap-space-2xs"><span className="w-2.5 h-2.5 rounded-full bg-secondary border border-on-surface"></span> <span data-i18n-key="ticker_instagram" className="">رسائل واستوريز إنستجرام</span></span>
@@ -112,8 +69,6 @@ function Index() {
 <span className="flex items-center gap-space-2xs"><span className="w-2.5 h-2.5 rounded-full bg-primary-container border border-on-surface"></span> <span data-i18n-key="ticker_facebook" className="">فيسبوك ماسنجر</span></span>
 </div>
 </div>
-</div>
-
 
 <section className="relative w-full max-w-container-max mx-auto px-gutter-mobile md:px-gutter-desktop pt-space-2xl md:pt-space-3xl pb-space-3xl">
 
