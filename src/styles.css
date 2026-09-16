@@ -287,10 +287,85 @@
 .hard-shadow-sm {
   box-shadow: 4px 4px 0px #111c2d;
 }
-.hard-shadow-active:active {
-  transform: translate(4px, 4px);
-  box-shadow: 0px 0px 0px #111c2d;
+.hard-shadow-active {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
+.hard-shadow-active:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px #111c2d;
+}
+.hard-shadow-active:active {
+  transform: translate(3px, 3px);
+  box-shadow: 1px 1px 0px #111c2d;
+}
+
+/* Interactive button effects */
+.btn-interactive {
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: transform, box-shadow;
+}
+.btn-interactive:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 6px 6px 0px #111c2d;
+}
+.btn-interactive:active {
+  transform: translateY(2px) scale(0.98);
+  box-shadow: 2px 2px 0px #111c2d;
+}
+
+/* Shimmer animation for prominent CTA buttons */
+.btn-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.btn-shimmer::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    60deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.35) 50%,
+    transparent 70%
+  );
+  transform: translateX(-150%) rotate(25deg);
+  animation: btn-shine 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  pointer-events: none;
+}
+
+@keyframes btn-shine {
+  0% {
+    transform: translateX(-150%) rotate(25deg);
+  }
+  30%, 100% {
+    transform: translateX(150%) rotate(25deg);
+  }
+}
+
+/* Continuous smooth ticker animation */
+@keyframes marquee-infinite {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee-smooth {
+  display: flex;
+  width: max-content;
+  animation: marquee-infinite 28s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-smooth:hover {
+  animation-play-state: paused;
+}
+
 .material-symbols-outlined {
   font-family: "Material Symbols Outlined";
   font-weight: normal;
@@ -304,4 +379,23 @@
   direction: ltr;
   -webkit-font-feature-settings: "liga";
   -webkit-font-smoothing: antialiased;
+}
+
+/* Wave animation */
+@keyframes wave {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-5px) rotate(-1.5deg);
+  }
+  75% {
+    transform: translateY(-2px) rotate(1.5deg);
+  }
+}
+
+.animate-wave {
+  display: inline-block;
+  animation: wave 2.8s ease-in-out infinite;
+  will-change: transform;
 }

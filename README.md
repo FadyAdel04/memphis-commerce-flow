@@ -490,3 +490,54 @@ cd <repository-name>
 npm i
 npm run dev
 ```
+
+## Supabase Setup
+
+This project uses Supabase for authentication, database, and row-level security (RLS) to implement multi-tenancy.
+
+### Environment Variables
+
+Create a `.env` file in the root directory with:
+
+```env
+VITE_SUPABASE_URL=your_supabase_project_url
+VITE_SUPABASE_PUBLISHABLE_KEY=your_supabase_anon_key
+```
+
+### Database Schema and RLS
+
+To set up the database with proper multi-tenancy isolation:
+
+1. Go to your Supabase project dashboard → SQL Editor
+2. Copy and run the SQL from `supabase/migrations/20240904000001_initial_schema.sql`
+3. This will create:
+   - Stores table linked to auth.users
+   - Products, orders, conversations, customers, staff tables
+   - Row Level Security (RLS) policies on all tables
+   - Triggers for automatic updated_at timestamps
+   - Indexes for performance
+
+### Multi-Tenant Architecture
+
+The implementation ensures complete store isolation:
+- Each store can only access its own data
+- RLS policies enforce `user_id = auth.uid()` on all queries
+- Even if API keys are compromised, attackers can only access stores they own
+- All tables are scoped to individual stores via store_id foreign keys
+
+### Authentication Flow
+
+1. User signs up with name, email, password
+2. After email verification, user completes store onboarding:
+   - Store name
+   - Category (fashion, beauty, electronics, food, accessories, other)
+   - Sales platforms (Instagram, WhatsApp, Facebook, Website - checkboxes)
+   - Number of products
+3. User is redirected to their personal store dashboard
+4. Dashboard shows store information and navigation to:
+   - Orders management
+   - Products inventory
+   - Customers
+   - Communication channels (WhatsApp/Instagram/Facebook)
+   - Analytics
+   - Settings
